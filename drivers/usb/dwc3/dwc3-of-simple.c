@@ -29,6 +29,8 @@
 #include <linux/of.h>
 #include <linux/of_platform.h>
 #include <linux/pm_runtime.h>
+#include <linux/mfd/syscon.h>
+#include <linux/regmap.h>
 
 struct dwc3_of_simple {
 	struct device		*dev;
@@ -41,6 +43,9 @@ static int dwc3_of_simple_probe(struct platform_device *pdev)
 	struct dwc3_of_simple	*simple;
 	struct device		*dev = &pdev->dev;
 	struct device_node	*np = dev->of_node;
+	struct regmap *regmap;
+	u32 mux_offset;
+	u32 mux_bit;
 
 	unsigned int		count;
 	int			ret;
@@ -62,6 +67,26 @@ static int dwc3_of_simple_probe(struct platform_device *pdev)
 		return -ENOMEM;
 
 	simple->dev = dev;
+
+	/* look for tcsr and if present, provision it */
+	regmap = syscon_regmap_lookup_by_phandle(np, "syscon-tcsr");
+	if (!IS_ERR(regmap)) {
+		if (of_property_read_u32_index(np, "syscon-tcsr", 1,
+					       &mux_offset)) {
+			dev_err(dev, "missing USB TCSR mux offset\n");
+			return -EINVAL;
+		}
+		if (of_property_read_u32_index(np, "syscon-tcsr", 2,
+					       &mux_bit)) {
+			dev_err(dev, "missing USB TCSR mux bit\n");
+			return -EINVAL;
+		}
+
+		regmap_update_bits(regmap, mux_offset, BIT(mux_bit),
+				   BIT(mux_bit));
+	} else {
+		dev_info(dev, "missing syscon tcsr entry\n");
+	}
 
 	for (i = 0; i < simple->num_clocks; i++) {
 		struct clk	*clk;
