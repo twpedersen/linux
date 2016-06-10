@@ -87,38 +87,6 @@
 			};
 		};
 
-		rpm@108000 {
-			regulators {
-				s1a {
-					regulator-min-microvolt = <1050000>;
-					regulator-max-microvolt = <1150000>;
-
-					qcom,switch-mode-frequency = <1200000>;
-
-				};
-
-				s1b {
-					regulator-min-microvolt = <1050000>;
-					regulator-max-microvolt = <1150000>;
-
-					qcom,switch-mode-frequency = <1200000>;
-				};
-
-				s2a {
-					regulator-min-microvolt = < 800000>;
-					regulator-max-microvolt = <1250000>;
-
-					qcom,switch-mode-frequency = <1200000>;
-				};
-
-				s2b {
-					regulator-min-microvolt = < 800000>;
-					regulator-max-microvolt = <1250000>;
-
-					qcom,switch-mode-frequency = <1200000>;
-				};
-			};
-		};
 		gsbi@16300000 {
 			qcom,mode = <GSBI_PROT_I2C_UART>;
 			status = "ok";

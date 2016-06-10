@@ -866,10 +866,6 @@ static const struct rpm_regulator_data rpm_pm8921_regulators[] = {
 	{ "usb-switch", QCOM_RPM_USB_OTG_SWITCH, &pm8921_switch, "vin_5vs" },
 	{ "hdmi-switch", QCOM_RPM_HDMI_SWITCH, &pm8921_switch, "vin_5vs" },
 	{ "ncp", QCOM_RPM_PM8921_NCP, &pm8921_ncp, "vdd_ncp" },
-	{ "s1a", QCOM_RPM_SMB208_S1a, &smb208_smps },
-	{ "s1b", QCOM_RPM_SMB208_S1b, &smb208_smps },
-	{ "s2a", QCOM_RPM_SMB208_S2a, &smb208_smps },
-	{ "s2b", QCOM_RPM_SMB208_S2b, &smb208_smps },
 	{ }
 };
 
